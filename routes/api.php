@@ -13,8 +13,15 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['middleware' => 'auth:api'], function () {
+    Route::apiResource('personas','PersonaController');
+    Route::get('tipo-documentos','TipoDocumentoController@index');
+    Route::get('tarjetas/{id}','TarjetaController@index');
+    Route::post('tarjetas/{id}','TarjetaController@store');
+    Route::delete('tarjetas/{id}','TarjetaController@destroy');
+    Route::post('logout','ApiAuthController@logout');
 });
 
-Route::resource('usuarios','ApiController')->except('create','edit');
+Route::post('login','ApiAuthController@login');
+
+
